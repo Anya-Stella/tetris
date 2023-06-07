@@ -12,14 +12,19 @@ class Helper {
 
 
 class music {
-  static FeelGood = new Audio("Syn Cole - Feel Good [NCS Release].mp3");
-  static rotate = new Audio("rotate.mp3");
-  static landing = new Audio("landing.mp3");
-  static eraseLine = new Audio("eraseLine.mp3");
-  static eraseLine2 = new Audio("eraseLIne2.mp3");
-  static eraseLine3 = new Audio("eraseLine3.mp3");
-  static eraseLine4 = new Audio("eraseLine4.mp3");
-  static hold = new Audio("hold.mp3");
+  //BGM
+  static LoveU = new Audio("music/Razihel - Love U [NCS Release].mp3");
+  static FeelGood = new Audio("music/Syn Cole - Feel Good [NCS Release].mp3");
+  static Puzzle = new Audio("music/RetroVision - Puzzle [NCS Release].mp3");
+  static earthquake = new Audio("music/ROY KNOX - Earthquake [NCS Release].mp3");
+  //効果音
+  static rotate = new Audio("music/rotate.mp3");
+  static landing = new Audio("music/landing.mp3");
+  static eraseLine = new Audio("music/eraseLine.mp3");
+  static eraseLine2 = new Audio("music/eraseLIne2.mp3");
+  static eraseLine3 = new Audio("music/eraseLine3.mp3");
+  static eraseLine4 = new Audio("music/eraseLine4.mp3");
+  static hold = new Audio("music/hold.mp3");
 }
 
 
@@ -329,6 +334,7 @@ class Field {
         music.landing.currentTime = 0;
         music.landing.play();//着地音
         Field.clearLines(); // ラインの消去
+        Game.changeDifficulty();//難易度変更のチェックと実行
         tetro = next; 
         next = Mino.createMino(); // 新しいミノを生成
         Field_next.draw();
@@ -440,14 +446,17 @@ class Field_next {
 class Game {
     //** scoreによってゲーム難易度を変える関数*/
     static changeDifficulty(){
-      if(score >= 300){
-        
+      if(score >= 1000){
+        interval = 200;
+        Game.changeBGM(music.earthquake);
       }
-      if(score >= 600){
-        
+      if(score >= 2000){
+        interval = 130;
+        Game.changeBGM(music.LoveU);
       }
-      if(score >= 2300){
-        
+      if(score >= 3000){
+        interval = 75;
+        Game.changeBGM(music.Puzzle);
       }
     }
 
@@ -462,17 +471,27 @@ class Game {
         Field_next.decideCanvasScale();
     }
 
+    //** ゲームを開始する関数*/
     static start(){
       //ゲームスタート
-      music.FeelGood.volume = 0.2;
-      music.FeelGood.play();
-
+      BGM.volume = 0.2;
+      BGM.play();
+      
       drawGame();
+    }
+
+    //* BGMを変更する関数*/
+    static changeBGM(music){
+      BGM.pause();
+      BGM = music;
+      BGM.play();
     }
 }
 
 
 //ゲームの実行
+//初期BGMの設定
+let BGM = music.FeelGood;
 
 //0.field 初期化
 Game.setField();
@@ -541,9 +560,9 @@ function drawGame() {
     Field.draw();
     tetro.draw();
 
+    
     Field.moveDown(); // ミノを一つ下に移動
     if (Field.clearLines()) {
-      //music.FeelGood.pause();
       return; // ゲームオーバー時は処理を終了
     }
 
