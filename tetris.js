@@ -17,7 +17,7 @@ class music {
   static FeelGood = new Audio("music/Syn Cole - Feel Good [NCS Release].mp3");
   static Puzzle = new Audio("music/RetroVision - Puzzle [NCS Release].mp3");
   static earthquake = new Audio("music/ROY KNOX - Earthquake [NCS Release].mp3");
-  static rush = new Audio("music/iFeature - Rush [NCS Release].mp3");
+  static rush = new Audio("music/Wubbaduck - Rush [NCS Release].mp3");
   //効果音
   static rotate = new Audio("music/rotate.mp3");
   static landing = new Audio("music/landing.mp3");
@@ -48,7 +48,6 @@ class Mino {
         this.tetro = Mino.tetros[index];
         this.color = Mino.colors[index];
         color = this.color;
-
     }
 
     //Minoの各長さ
