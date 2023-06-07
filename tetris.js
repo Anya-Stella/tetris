@@ -17,6 +17,7 @@ class music {
   static FeelGood = new Audio("music/Syn Cole - Feel Good [NCS Release].mp3");
   static Puzzle = new Audio("music/RetroVision - Puzzle [NCS Release].mp3");
   static earthquake = new Audio("music/ROY KNOX - Earthquake [NCS Release].mp3");
+  static rush = new Audio("music/iFeature - Rush [NCS Release].mp3");
   //効果音
   static rotate = new Audio("music/rotate.mp3");
   static landing = new Audio("music/landing.mp3");
@@ -449,14 +450,22 @@ class Game {
       if(score >= 1000){
         interval = 200;
         Game.changeBGM(music.earthquake);
+        document.body.style.backgroundImage = "url(BG2.jpg)";
       }
       if(score >= 2000){
         interval = 130;
         Game.changeBGM(music.LoveU);
+        document.body.style.backgroundImage = "url(BG12.jpg)";
       }
       if(score >= 3000){
         interval = 75;
         Game.changeBGM(music.Puzzle);
+        document.body.style.backgroundImage = "url(BG13.png)";
+      }
+      if(score >= 5000){
+        interval = 50;
+        Game.changeBGM(music.rush);
+        document.body.style.backgroundImage = "url(BG6.jpg)";
       }
     }
 
@@ -570,6 +579,5 @@ function drawGame() {
   }
   animationFrameId = requestAnimationFrame(drawGame);
 }
-
 
 
