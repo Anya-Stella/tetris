@@ -26,10 +26,11 @@ class music {
 class Block {
     //ブロック1マスのサイズ(px)をwindow.heightによってブロックのサイズを決定します
     static windowH = window.innerHeight;
-    static size = (Block.windowH > 768) ? 28 : 26;
+    static size = (Block.windowH > 950) ? 32 : (Block.windowH > 850) ? 30 : (Block.windowH > 750) ? 28 : 26
 
 
 }
+console.log(Block.windowH)
 
 let color;
 
@@ -269,29 +270,31 @@ class Field {
         field.unshift(new Array(Field.Col).fill("white"));
       }
 
-      //消去音
+      //消去音&scoreの更新
       if(count==1){
         music.eraseLine.currentTime = 0;
         music.eraseLine.play();
-        scoreDOM.innerHTML = Math.floor(parseInt(scoreDOM.innerHTML, 10) + 100*1.0);
+        score += Math.floor(100 * 1.0);
+        Game.screenScore();
       }
       else if(count==2){
         music.eraseLine2.currentTime = 0;
         music.eraseLine2.play();
-        scoreDOM.innerHTML = Math.floor(parseInt(scoreDOM.innerHTML, 10) + 200*1.1);
+        score += Math.floor(200 * 1.2);
+        Game.screenScore();
       }
       else if(count==3){
         music.eraseLine3.currentTime = 0;
         music.eraseLine3.play();
-        scoreDOM.innerHTML = Math.floor(parseInt(scoreDOM.innerHTML, 10) + 300*1.3);
+        score += Math.floor(300 * 1.3);
+        Game.screenScore();
       }
       else if(count>=4){
         music.eraseLine4.currentTime = 0;
         music.eraseLine4.play();
-        scoreDOM.innerHTML = Math.floor(parseInt(scoreDOM.innerHTML, 10) + (100 * count)*1.5);
+        score += Math.floor(count * 100 * 1.5);
+        Game.screenScore();
       }
-      
-        
       
       // ゲームオーバーチェック
       if (field[0].some(block => block !== "white")) {
@@ -301,7 +304,7 @@ class Field {
         context.fillStyle = "red";
         context.fillText("GAME OVER", canvas.width / 2 - 100, canvas.height / 2);
         // ゲームを停止する処理
-        cancelAnimationFrame(animationFrameId);
+        cancelAnimationFrame(animationFrameID);
         return true;
       }
       return false;
@@ -435,6 +438,27 @@ class Field_next {
 
 
 class Game {
+    //** scoreによってゲーム難易度を変える関数*/
+    static changeDifficulty(){
+      if(score >= 300){
+        intaval = 200;
+        lastTime = 0;
+      }
+      if(score >= 600){
+        intaval = 120;
+        lastTime = 0;
+      }
+      if(score >= 2300){
+        intaval = 75;
+        lastTime = 0;
+      }
+    }
+
+    //* scoreDOM.innerHTMLを更新する関数*/
+    static screenScore(){
+      scoreDOM.innerHTML = score;
+    }
+
     /** fieldを初期化する関数*/
     static setField(){
         Field.decideCanvasScale();
@@ -505,11 +529,10 @@ let lastTime = 0;
 
 //scoreの計算
 let scoreDOM = document.querySelector(".scoreBoard");
-scoreDOM.innerHTML = 0;
+let score = 0;
+Game.screenScore();
 
-// ゲームの実行
-let animationFrameId;
-
+// ゲームを連続的に描写
 function drawGame() {
   const currentTime = Date.now();
   const deltaTime = currentTime - lastTime;
@@ -528,7 +551,8 @@ function drawGame() {
 
     lastTime = currentTime;
   }
-  animationFrameId = requestAnimationFrame(drawGame);
+  requestAnimationFrame(drawGame);
 }
+
 
 
