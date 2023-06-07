@@ -304,7 +304,7 @@ class Field {
         context.fillStyle = "red";
         context.fillText("GAME OVER", canvas.width / 2 - 100, canvas.height / 2);
         // ゲームを停止する処理
-        cancelAnimationFrame(animationFrameID);
+        cancelAnimationFrame(animationFrameId);
         return true;
       }
       return false;
@@ -441,16 +441,13 @@ class Game {
     //** scoreによってゲーム難易度を変える関数*/
     static changeDifficulty(){
       if(score >= 300){
-        intaval = 200;
-        lastTime = 0;
+        
       }
       if(score >= 600){
-        intaval = 120;
-        lastTime = 0;
+        
       }
       if(score >= 2300){
-        intaval = 75;
-        lastTime = 0;
+        
       }
     }
 
@@ -475,7 +472,7 @@ class Game {
 }
 
 
-//ゲームの実行(ここは最終的に関数化したいです)
+//ゲームの実行
 
 //0.field 初期化
 Game.setField();
@@ -524,7 +521,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // 描画間隔(ms)
-const interval = 300; 
+let interval = 300;
 let lastTime = 0;
 
 //scoreの計算
@@ -533,6 +530,7 @@ let score = 0;
 Game.screenScore();
 
 // ゲームを連続的に描写
+let animationFrameId;
 function drawGame() {
   const currentTime = Date.now();
   const deltaTime = currentTime - lastTime;
@@ -551,7 +549,7 @@ function drawGame() {
 
     lastTime = currentTime;
   }
-  requestAnimationFrame(drawGame);
+  animationFrameId = requestAnimationFrame(drawGame);
 }
 
 
